@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
@@ -37,17 +39,19 @@ const Chatbox = () => {
   };
 
   const sendMessage = () => {
-    if (socket) {
+    if (socket && messageInput.trim() !== '') {
+      // Trim the message to check if it's empty after removing leading and trailing whitespaces
       // Emit the message to the server
       socket.emit('message', messageInput);
-
+  
       // Update the local state with the sent message
       setMessages((prevMessages) => [...prevMessages, { text: messageInput, sender: 'You' }]);
-
+  
       // Clear the message input
       setMessageInput('');
     }
   };
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -57,28 +61,36 @@ const Chatbox = () => {
   };
 
   return (
-    <div className="w-96 h-72 bg-yellow bg-opacity-20 backdrop-blur rounded-md shadow-md">
-      <div style={{ overflowY: 'scroll', height: '100%' }}>
+    <div className="w-96 h-72 bg-white bg-opacity-20 backdrop-blur rounded-md shadow-md flex flex-col justify-end">
+      <div style={{ overflowY: 'scroll', maxHeight: '100%' }}>
         {messages.map((msg, index) => (
-          <div key={index} className="text-white">
+          <div key={index} className="text-black">
             {`${msg.sender}: ${msg.text}`}
           </div>
         ))}
       </div>
-      <div>
+      <div className="flex items-center mt-2">
         <input
           type="text"
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          className="bg-gray-300 rounded-md border py-1 px-2 flex-1"
         />
-        <button onClick={sendMessage}>Send</button>
-        <button onClick={connectDisconnect}>
+        <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+          <FontAwesomeIcon icon={faPaperPlane} className="mr-2" />
+        </button>
+        <button
+          onClick={connectDisconnect}
+          className="bg-green-500 text-white px-4 py-2 rounded-md ml-2"
+          style={{ width: '100px' }}
+        >
           {socket ? 'Disconnect' : 'Connect'}
         </button>
       </div>
     </div>
   );
+  
 };
 
 export default Chatbox;

@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash } from '@fortawesome/free-solid-svg-icons';
+
 import React, { useRef, useEffect, useState } from 'react';
 
 const Camera = () => {
@@ -60,15 +63,25 @@ const Camera = () => {
     <div className="w-96 h-72 bg-white bg-opacity-20 backdrop-blur relative">
       <video ref={videoRef} className="w-full h-full" autoPlay playsInline muted={isMuted} />
       <div className="absolute top-2 right-2 flex items-center space-x-2">
-        <button onClick={toggleMute} className="text-white">
-          {isMuted ? '🔊' : '🔇'}
+        <button
+          onClick={toggleMute}
+          className="text-white bg-blue-500 p-2 rounded-full flex items-center justify-center"
+          style={{ width: '30px', height: '30px' }}
+        >
+          <FontAwesomeIcon icon={isMuted ? faMicrophoneSlash : faMicrophone} />
         </button>
-        <button onClick={toggleVideo} className="text-white">
-          {isVideoOn ? '📷' : '🚫'}
+        <button
+          onClick={toggleVideo}
+          className="text-white bg-blue-500 p-2 rounded-full flex items-center justify-center"
+          style={{ width: '30px', height: '30px' }}
+        >
+          <FontAwesomeIcon icon={isVideoOn ? faVideoSlash : faVideo} />
         </button>
       </div>
     </div>
   );
+  
+  
 };
 
 export default Camera;
